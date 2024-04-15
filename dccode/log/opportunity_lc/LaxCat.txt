@@ -1,0 +1,491 @@
+layer_num:	1
+
+window_list:	[7, 16, 32, 48, 64, 80, 96, 112, 128]
+
+stride_list:	[3, 8, 16, 24, 32, 40, 48, 56, 64]
+
+k_list:	[3, 8, 16, 24, 24, 32, 32, 40, 40]
+
+hidden_channel:	48
+
+Start time:Tue Mar 26 14:44:51 2024
+Label num cnt: [5126, 2328, 1816, 329]
+Training size: 9599
+Testing size: 1474
+Total parameters: 100312
+Training epoch : 1
+Training loss : 11.704450357755025
+Accuracy : 0.44843962008141114
+Macro F1 : 0.31711972606005384
+----------------------------
+Training epoch : 2
+Training loss : 6.25413136879603
+Accuracy : 0.40094979647218454
+Macro F1 : 0.32858225676929387
+----------------------------
+Training epoch : 3
+Training loss : 3.573101108074188
+Accuracy : 0.291044776119403
+Macro F1 : 0.200849413086439
+----------------------------
+Training epoch : 4
+Training loss : 4.201462190945943
+Accuracy : 0.2971506105834464
+Macro F1 : 0.20573052647386464
+----------------------------
+Training epoch : 5
+Training loss : 4.458226451873779
+Accuracy : 0.35074626865671643
+Macro F1 : 0.2705482111822579
+----------------------------
+Training epoch : 6
+Training loss : 3.1057136193911234
+Accuracy : 0.4090909090909091
+Macro F1 : 0.3266645676525286
+----------------------------
+Training epoch : 7
+Training loss : 4.2154509560267135
+Accuracy : 0.36906377204884666
+Macro F1 : 0.1804520123410017
+----------------------------
+Training epoch : 8
+Training loss : 3.322535595099131
+Accuracy : 0.45725915875169604
+Macro F1 : 0.2868071255130906
+----------------------------
+Training epoch : 9
+Training loss : 2.663017230431239
+Accuracy : 0.3175033921302578
+Macro F1 : 0.19979629517691064
+----------------------------
+Training epoch : 10
+Training loss : 3.15991503794988
+Accuracy : 0.3710990502035278
+Macro F1 : 0.180652047669545
+----------------------------
+Training epoch : 11
+Training loss : 2.858544125556946
+Accuracy : 0.3989145183175034
+Macro F1 : 0.18329422009003812
+----------------------------
+Training epoch : 12
+Training loss : 2.507695710659027
+Accuracy : 0.373134328358209
+Macro F1 : 0.17874217779064688
+----------------------------
+Training epoch : 13
+Training loss : 2.926495903333028
+Accuracy : 0.31886024423337855
+Macro F1 : 0.19334184000248006
+----------------------------
+Training epoch : 14
+Training loss : 2.0565747523307802
+Accuracy : 0.3968792401628223
+Macro F1 : 0.16322713918186826
+----------------------------
+Training epoch : 15
+Training loss : 2.039195042848587
+Accuracy : 0.3894165535956581
+Macro F1 : 0.30761512379533956
+----------------------------
+Training epoch : 16
+Training loss : 2.600317760705948
+Accuracy : 0.4559023066485753
+Macro F1 : 0.27206929543886066
+----------------------------
+Training epoch : 17
+Training loss : 2.144035882949829
+Accuracy : 0.32360922659430125
+Macro F1 : 0.19487479556296178
+----------------------------
+Training epoch : 18
+Training loss : 2.2272655848662057
+Accuracy : 0.33717774762550884
+Macro F1 : 0.22470617281037503
+----------------------------
+Training epoch : 19
+Training loss : 2.414401666720708
+Accuracy : 0.38670284938941657
+Macro F1 : 0.2989280547359482
+----------------------------
+Training epoch : 20
+Training loss : 2.2436660162607827
+Accuracy : 0.37991858887381275
+Macro F1 : 0.1626067669099873
+----------------------------
+Training epoch : 21
+Training loss : 2.0723947715759277
+Accuracy : 0.33242876526458615
+Macro F1 : 0.21138278743809102
+----------------------------
+Training epoch : 22
+Training loss : 2.456883321603139
+Accuracy : 0.42740841248303935
+Macro F1 : 0.2577795351824948
+----------------------------
+Training epoch : 23
+Training loss : 2.041980098883311
+Accuracy : 0.42469470827679784
+Macro F1 : 0.23061196344521895
+----------------------------
+Training epoch : 24
+Training loss : 2.3987136673927307
+Accuracy : 0.3283582089552239
+Macro F1 : 0.21877430165919698
+----------------------------
+Training epoch : 25
+Training loss : 1.7749631734689078
+Accuracy : 0.40366350067842605
+Macro F1 : 0.2617030786673644
+----------------------------
+Training epoch : 26
+Training loss : 1.664438657363256
+Accuracy : 0.32632293080054275
+Macro F1 : 0.20105059047748147
+----------------------------
+Training epoch : 27
+Training loss : 1.7480830478668212
+Accuracy : 0.42672998643147897
+Macro F1 : 0.23398467601152378
+----------------------------
+Training epoch : 28
+Training loss : 1.6777855360507965
+Accuracy : 0.43283582089552236
+Macro F1 : 0.27865366589176055
+----------------------------
+Training epoch : 29
+Training loss : 1.815631602605184
+Accuracy : 0.3948439620081411
+Macro F1 : 0.16163008715268606
+----------------------------
+Training epoch : 30
+Training loss : 1.6281184581915538
+Accuracy : 0.35006784260515605
+Macro F1 : 0.24591357042549125
+----------------------------
+Training epoch : 31
+Training loss : 1.6326655399799348
+Accuracy : 0.4253731343283582
+Macro F1 : 0.23460679104831952
+----------------------------
+Training epoch : 32
+Training loss : 1.73237362742424
+Accuracy : 0.39077340569877883
+Macro F1 : 0.18851620118471957
+----------------------------
+Training epoch : 33
+Training loss : 1.944411296447118
+Accuracy : 0.45115332428765265
+Macro F1 : 0.2651753786411621
+----------------------------
+Training epoch : 34
+Training loss : 1.7265661696592967
+Accuracy : 0.4151967435549525
+Macro F1 : 0.2317936233260169
+----------------------------
+Training epoch : 35
+Training loss : 1.5760721421241761
+Accuracy : 0.3548168249660787
+Macro F1 : 0.22737434652960867
+----------------------------
+Training epoch : 36
+Training loss : 1.6116165415445964
+Accuracy : 0.432157394843962
+Macro F1 : 0.23487847561201
+----------------------------
+Training epoch : 37
+Training loss : 1.5183756450812023
+Accuracy : 0.3412483039348711
+Macro F1 : 0.21820167173849053
+----------------------------
+Training epoch : 38
+Training loss : 1.5763238859176636
+Accuracy : 0.36702849389416553
+Macro F1 : 0.23678108075953078
+----------------------------
+Training epoch : 39
+Training loss : 1.4176137093702952
+Accuracy : 0.3412483039348711
+Macro F1 : 0.23199178137009224
+----------------------------
+Training epoch : 40
+Training loss : 1.5842445679505666
+Accuracy : 0.4050203527815468
+Macro F1 : 0.18608497734572815
+----------------------------
+Training epoch : 41
+Training loss : 1.4719031198819479
+Accuracy : 0.42672998643147897
+Macro F1 : 0.23611635600676134
+----------------------------
+Training epoch : 42
+Training loss : 1.5626099316279094
+Accuracy : 0.42401628222523746
+Macro F1 : 0.22891683534106155
+----------------------------
+Training epoch : 43
+Training loss : 1.59130948583285
+Accuracy : 0.37449118046132973
+Macro F1 : 0.2515798010232828
+----------------------------
+Training epoch : 44
+Training loss : 1.3605187726020813
+Accuracy : 0.38738127544097695
+Macro F1 : 0.23786408058035555
+----------------------------
+Training epoch : 45
+Training loss : 1.3602007548014323
+Accuracy : 0.38263229308005425
+Macro F1 : 0.2364649776867404
+----------------------------
+Training epoch : 46
+Training loss : 1.360646603902181
+Accuracy : 0.40027137042062416
+Macro F1 : 0.20080238696167452
+----------------------------
+Training epoch : 47
+Training loss : 1.3585886629422506
+Accuracy : 0.40298507462686567
+Macro F1 : 0.24329942191169796
+----------------------------
+Training epoch : 48
+Training loss : 1.3530400466918946
+Accuracy : 0.39077340569877883
+Macro F1 : 0.24231030514482765
+----------------------------
+Training epoch : 49
+Training loss : 1.3322023638089497
+Accuracy : 0.4016282225237449
+Macro F1 : 0.2624919139626889
+----------------------------
+Training epoch : 50
+Training loss : 1.316870224873225
+Accuracy : 0.40637720488466755
+Macro F1 : 0.24763902410064303
+----------------------------
+layer_num:	1
+
+window_list:	[7, 16, 32, 48, 64, 80, 96, 112, 128]
+
+stride_list:	[3, 8, 16, 24, 32, 40, 48, 56, 64]
+
+k_list:	[3, 8, 16, 24, 24, 32, 32, 40, 40]
+
+hidden_channel:	48
+
+Start time:Mon Apr 15 19:19:28 2024
+Label num cnt: [5126, 2328, 1816, 329]
+Training size: 9599
+Testing size: 1474
+Total parameters: 100312
+Training epoch : 1
+layer_num:	1
+
+window_list:	[7, 16, 32, 48, 64, 80, 96, 112, 128]
+
+stride_list:	[3, 8, 16, 24, 32, 40, 48, 56, 64]
+
+k_list:	[3, 8, 16, 24, 24, 32, 32, 40, 40]
+
+hidden_channel:	48
+
+Start time:Mon Apr 15 19:21:10 2024
+Label num cnt: [5126, 2328, 1816, 329]
+Training size: 9599
+Testing size: 1474
+Total parameters: 100312
+Training epoch : 1
+Training loss : 7.705614017645518
+layer_num:	1
+
+window_list:	[7, 16, 32, 48, 64, 80, 96, 112, 128]
+
+stride_list:	[3, 8, 16, 24, 32, 40, 48, 56, 64]
+
+k_list:	[3, 8, 16, 24, 24, 32, 32, 40, 40]
+
+hidden_channel:	48
+
+Start time:Mon Apr 15 19:23:54 2024
+Label num cnt: [5126, 2328, 1816, 329]
+Training size: 9599
+Testing size: 1474
+Total parameters: 100312
+Training epoch : 1
+Training loss : 11.014412167867025
+Accuracy : 0.3175033921302578
+Macro F1 : 0.21799250111949958
+----------------------------
+Training epoch : 2
+Training loss : 4.2315915242830915
+Accuracy : 0.3337856173677069
+Macro F1 : 0.26362871749202194
+----------------------------
+Training epoch : 3
+Training loss : 2.53908781449
+Accuracy : 0.30800542740841247
+Macro F1 : 0.20620435916264807
+----------------------------
+Training epoch : 4
+Training loss : 2.7273189194997154
+Accuracy : 0.2774762550881954
+Macro F1 : 0.22266725170111784
+----------------------------
+Training epoch : 5
+Training loss : 2.1200447567303975
+Accuracy : 0.2862957937584803
+Macro F1 : 0.19674647550293387
+----------------------------
+Training epoch : 6
+Training loss : 2.1243628676732382
+Accuracy : 0.296472184531886
+Macro F1 : 0.2091674781371725
+----------------------------
+Training epoch : 7
+Training loss : 2.2894820578893027
+Accuracy : 0.364314789687924
+Macro F1 : 0.266935997567261
+----------------------------
+Training epoch : 8
+Training loss : 2.2882127968470254
+Accuracy : 0.29240162822252375
+Macro F1 : 0.20644876194126452
+----------------------------
+Training epoch : 9
+Training loss : 1.8566630609830221
+Accuracy : 0.3405698778833107
+Macro F1 : 0.16488123619053383
+----------------------------
+Training epoch : 10
+Training loss : 2.1789912954966226
+Accuracy : 0.4056987788331072
+Macro F1 : 0.279664985844829
+----------------------------
+Training epoch : 11
+Training loss : 2.1020278835296633
+Accuracy : 0.3276797829036635
+Macro F1 : 0.2344714494021709
+----------------------------
+Training epoch : 12
+Training loss : 1.5961940256754557
+Accuracy : 0.3466757123473541
+Macro F1 : 0.17501265167210608
+----------------------------
+Training epoch : 13
+layer_num:	1
+
+window_list:	[7, 16, 32, 48, 64, 80, 96, 112, 128]
+
+stride_list:	[3, 8, 16, 24, 32, 40, 48, 56, 64]
+
+k_list:	[3, 8, 16, 24, 24, 32, 32, 40, 40]
+
+hidden_channel:	48
+
+Start time:Mon Apr 15 19:25:58 2024
+Label num cnt: [5126, 2328, 1816, 329]
+Training size: 9599
+Testing size: 1474
+Total parameters: 100312
+Training epoch : 1
+Training loss : 13.012424144744873
+Accuracy : 0.3887381275440977
+Macro F1 : 0.32658587499949027
+----------------------------
+Training epoch : 2
+Training loss : 3.9677628962198894
+Accuracy : 0.3941655359565807
+Macro F1 : 0.3129481954832261
+----------------------------
+Training epoch : 3
+Training loss : 3.0447763299942014
+Accuracy : 0.24084124830393486
+Macro F1 : 0.18056038785509423
+----------------------------
+Training epoch : 4
+Training loss : 2.218537347316742
+Accuracy : 0.3656716417910448
+Macro F1 : 0.2292360506800662
+----------------------------
+Training epoch : 5
+Training loss : 2.1287770517667135
+Accuracy : 0.34328358208955223
+Macro F1 : 0.2084904784194845
+----------------------------
+Training epoch : 6
+Training loss : 2.19219485839208
+Accuracy : 0.21913161465400272
+Macro F1 : 0.16359011898989145
+----------------------------
+Training epoch : 7
+Training loss : 1.8765796399116517
+Accuracy : 0.4043419267299864
+Macro F1 : 0.1938799664818362
+----------------------------
+Training epoch : 8
+Training loss : 1.8703908240795135
+Accuracy : 0.2672998643147897
+Macro F1 : 0.1935525949226428
+----------------------------
+Training epoch : 9
+Training loss : 1.735599505106608
+Accuracy : 0.41655359565807326
+Macro F1 : 0.2552106362948031
+----------------------------
+Training epoch : 10
+Training loss : 1.7811833302179971
+Accuracy : 0.4233378561736771
+Macro F1 : 0.24160370823111132
+----------------------------
+Training epoch : 11
+Training loss : 1.8685137343406677
+Accuracy : 0.39823609226594303
+Macro F1 : 0.24256420087608482
+----------------------------
+Training epoch : 12
+Training loss : 1.845478768348694
+Accuracy : 0.2856173677069199
+Macro F1 : 0.21192993231644058
+----------------------------
+Training epoch : 13
+Training loss : 1.5859258675575256
+Accuracy : 0.42740841248303935
+Macro F1 : 0.2549702340222
+----------------------------
+Training epoch : 14
+Training loss : 2.0281143260002135
+Accuracy : 0.43012211668928085
+Macro F1 : 0.24688885799876867
+----------------------------
+Training epoch : 15
+Training loss : 1.6787633061408997
+Accuracy : 0.41383989145183175
+Macro F1 : 0.24001642409293125
+----------------------------
+Training epoch : 16
+Training loss : 1.9709730990727743
+Accuracy : 0.2591587516960651
+Macro F1 : 0.1973070304685428
+----------------------------
+Training epoch : 17
+layer_num:	1
+
+window_list:	[7, 16, 32, 48, 64, 80, 96, 112, 128]
+
+stride_list:	[3, 8, 16, 24, 32, 40, 48, 56, 64]
+
+k_list:	[3, 8, 16, 24, 24, 32, 32, 40, 40]
+
+hidden_channel:	48
+
+Start time:Mon Apr 15 19:29:30 2024
+Label num cnt: [5126, 2328, 1816, 329]
+Training size: 9599
+Testing size: 1474
+Total parameters: 100312
+Training epoch : 1
+Training loss : 10.182041541735332
+Accuracy : 0.3677069199457259
+Macro F1 : 0.2502941453724953
+----------------------------
+Training epoch : 2
