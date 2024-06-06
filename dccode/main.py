@@ -6,15 +6,11 @@ import torch.nn as nn
 from dccode.model.laxcat import LaxCat
 from utils import *
 from sklearn.metrics import recall_score, f1_score, accuracy_score
-# import os
-# import numpy as np
-# from dccode.model.THAT import HARTrans
-# from dccode.model.UniTS import UniTS
-# from dccode.model.dual import RFNet
-# from dccode.model.mann import MaDNN, MaCNN
-# from dccode.model.resnet import ResNet
-# from dccode.model.static_UniTS import static_UniTS
-# from model import *
+import torch.optim as optim
+import matplotlib.pyplot as plt
+from IPython.display import clear_output
+import numpy as np
+
 
 # 进行参数配置
 def parse_args():
@@ -50,7 +46,7 @@ def parse_args():
     parser.add_argument('--test_only', action='store_true')
     args = parser.parse_args()
     config = read_config(args.config + '.yaml')
-    #如果没有日志的保存地址，则创建日志保存地址
+    # 如果没有日志的保存地址，则创建日志保存地址
     if not os.path.exists(args.log):
         os.mkdir(args.log)
     args.log_path = os.path.join(args.log, args.dataset)
@@ -61,31 +57,23 @@ def parse_args():
     # 指定使用哪一个GPU进行加速，仅当有多核GPU时使用
     torch.cuda.set_device(args.n_gpu)
     # 数据库设置
-    # input_size:输入特征的大小
-    # input_channel:输入特征的通道数
-    # hheads:某个参数，与模型架构相关
-    # sensor_axis:传感器轴的数量
+    '''
+    time_num:采样时间点个数
+    feature_num:输入特征的通道数（个数）
+    '''
     if args.dataset == 'opportunity_lc':
-        args.input_size = 256
-        args.input_channel = 45
-        args.hheads = 9
-        args.SENSOR_AXIS = 3
+        args.time_num = 256
+        args.feature_num = 45
     elif args.dataset == 'seizure':
-        args.input_channel = 18
-        args.input_size = 256
-        args.hheads = 6
-        args.SENSOR_AXIS = 1
+        args.time_num = 256
+        args.feature_num = 18
     elif args.dataset == 'wifi':
-        args.input_channel = 180
-        args.input_size = 256
+        args.time_num = 256
+        args.feature_num = 180
         args.batch_size = 16
-        args.hheads = 9
-        args.SENSOR_AXIS = 3
     elif args.dataset == 'keti':
-        args.input_channel = 4
-        args.input_size = 256
-        args.hheads = 4
-        args.SENSOR_AXIS = 1
+        args.time_num = 256
+        args.feature_num = 4
     # 设置日志存储位置
     args.model_save_path = os.path.join(args.log_path, args.model + '_' + args.config + '.pt')
     return args, config
@@ -96,15 +84,15 @@ args, config = parse_args()
 log = set_up_logging(args, config)
 args.log = log
 
-
-# 计算模型性能
+"""
+测试集验证函数，计算模型性能
+上下文管理器，不会进行自动求导（跟踪张量的计算历史）
+节省内存并且加快计算速度
+"""
 def test(model, xtest, ytest):
-    # 存储预测标签
-    y_pred = []
-    # 存储真实标签
-    y_true = []
-    # 上下文管理器，不会进行自动求导（跟踪张量的计算历史）
-    # 节省内存并且加快计算速度
+    y_pred = []  # 存储预测标签
+    y_true = []  # 存储真实标签
+
     with torch.no_grad():
         # 模型设置为评估模式
         # 关闭模型中的一些特定于训练的功能
@@ -112,7 +100,6 @@ def test(model, xtest, ytest):
         model.eval()
         # 循环遍历测试数据，每次处理batch_size个样本
         # 为什么要处理batch_size个样本呢？
-        # for i in range(0, len(xtest), args.batch_size):
         for i in range(0, len(xtest), args.batch_size):
             # 如果当前批次大小小于batch_size，则取剩下的样本
             if i + args.batch_size <= len(xtest):
@@ -139,12 +126,12 @@ def main():
     # 打印使用的模型
     print(args.model)
 
-    model = LaxCat(input_size=args.input_size, input_channel=args.input_channel, num_label=args.num_labels,
-                   hidden_dim=64, kernel_size=32, stride=8).cuda()
+    model = LaxCat(time_num=args.time_num, feature_num=args.feature_num, label_num=args.num_labels,
+                   hidden_dim=64, kernel_size=(2, 32), stride=(8, 8)).cuda()
     # 使用Adam优化器，传入模型参数和学习率
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
-    #
+    # 统计参数个数
     total_params = sum(p.numel() for p in model.parameters())
     log('Total parameters: ' + str(total_params))
 
@@ -172,30 +159,15 @@ def main():
             model.train()
             # 定义迭代损失
             epoch_loss = 0
+            correct = 0
+            total = 0
 
             log("Training epoch : " + str(ep))
-            # for i in range(0, len(xtrain), args.batch_size):
-            #     # 将输入特征和标签转化为PyTorch张量，并且转移到GPU上
-            #     if i + args.batch_size <= len(xtrain):
-            #         x = torch.from_numpy(np.array(xtrain[i: i + args.batch_size])).cuda()
-            #         x = torch.tensor(x, dtype=torch.float32).cuda()
-            #         # x = torch.Tensor(xtrain[i: i + args.batch_size]).cuda()
-            #         y = torch.LongTensor(ytrain[i: i + args.batch_size]).cuda()
-            #     else:
-            #         x = torch.Tensor(xtrain[i:]).cuda()
-            #         y = torch.LongTensor(ytrain[i:]).cuda()
-            #     # 得到输出和loss
-            #     out = model(x)
-            #     loss = loss_func(out, y)
-            #     epoch_loss += loss.cpu().item()
-            #     # 执行反向传播，和参数更新
-            #     optimizer.zero_grad()
-            #     loss.backward()
-            #     optimizer.step()
             for i in range(0, len(xtrain), args.batch_size):
                 # 将输入特征和标签转化为PyTorch张量，并且转移到GPU上
                 if i + args.batch_size <= len(xtrain):
-                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i: i + args.batch_size])), dtype=torch.float32).cuda()
+                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i: i + args.batch_size])),
+                                     dtype=torch.float32).cuda()
                     # x = torch.Tensor(xtrain[i: i + args.batch_size]).cuda()
                     y = torch.LongTensor(ytrain[i: i + args.batch_size]).cuda()
                 else:
@@ -209,11 +181,20 @@ def main():
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
+
+                _, predicted = torch.max(out.data, 1)
+                total += y.size(0)
+                correct += (predicted == y).sum().item()
+
+            train_loss.append(epoch_loss / (i / args.batch_size + 1))
+            train_accuracy.append(100 * correct / total)
             # 打印每个epoch的训练损失
             log("Training loss : " + str(epoch_loss / (i / args.batch_size + 1)))
             # 在测试集上对模型进行测试，并且打印结果
             test(model, xtest, ytest)
             log("----------------------------")
+
+            plot_metrics(train_loss, train_accuracy)
     # 如果收到键盘中断信号，则停止
     except KeyboardInterrupt:
         print('Exiting from training early')
@@ -221,6 +202,33 @@ def main():
     # 如果设置了保存路径则存储模型状态字典到指定路径
     if args.save:
         torch.save(model.state_dict(), args.model_save_path)
+
+
+# 训练数据的损失和准确率，用于作图
+train_loss = []
+train_accuracy = []
+
+
+# 绘图函数
+def plot_metrics(train_losses, train_accuracies):
+    clear_output(wait=True)
+    plt.figure(figsize=(12, 5))
+
+    plt.subplot(1, 2, 1)
+    plt.plot(train_losses, label='Training Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Training Loss')
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.plot(train_accuracies, label='Training Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.title('Training Accuracy')
+    plt.legend()
+
+    plt.show()
 
 
 if __name__ == '__main__':
