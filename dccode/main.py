@@ -17,7 +17,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='train and test')
     parser.add_argument('--config', default='default', type=str)  # Read UniTS hyperparameters（超参数，但是这个是UniTS模型的）
     # 数据库选择
-    parser.add_argument('--dataset', default='seizure', type=str,
+    parser.add_argument('--dataset', default='opportunity_lc', type=str,
                         choices=['opportunity_lc', 'seizure', 'wifi', 'keti'])
     # 模型选择，之后要删除
     parser.add_argument('--model', default='LaxCat', type=str,
@@ -83,6 +83,9 @@ args, config = parse_args()
 log = set_up_logging(args, config)
 args.log = log
 
+# 卷积的特征数量
+pnum = 2
+
 """
 测试集验证函数，计算模型性能
 上下文管理器，不会进行自动求导（跟踪张量的计算历史）
@@ -128,7 +131,7 @@ def main():
     print(args.model)
 
     model = LaxCat(time_num=args.time_num, feature_num=args.feature_num, label_num=args.num_labels,
-                   hidden_dim=64, kernel_size=(1, 32), stride=(8, 8)).cuda()
+                   hidden_dim=64, kernel_size=(pnum, 32), stride=(8, 8)).cuda()
     # 使用Adam优化器，传入模型参数和学习率
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
@@ -167,11 +170,13 @@ def main():
             for i in range(0, len(xtrain), args.batch_size):
                 # 将输入特征和标签转化为PyTorch张量，并且转移到GPU上
                 if i + args.batch_size <= len(xtrain):
-                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i: i + args.batch_size]))).float().cuda()
+                    # x = torch.tensor(torch.from_numpy(np.array(xtrain[i: i + args.batch_size]))).float().cuda()
+                    x = xtrain[i: i + args.batch_size].clone().detach().float().cuda()
                     # x = torch.Tensor(xtrain[i: i + args.batch_size]).cuda()
                     y = torch.LongTensor(ytrain[i: i + args.batch_size]).cuda()
                 else:
-                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i:]))).float().cuda()
+                    # x = torch.tensor(torch.from_numpy(np.array(xtrain[i:]))).float().cuda()
+                    x = xtrain[i:].clone().detach().float().cuda()
                     y = torch.LongTensor(ytrain[i:]).cuda()
                 # 得到输出和loss
                 out = model(x)
@@ -209,6 +214,7 @@ train_loss = []
 train_accuracy = []
 test_loss = []
 test_accuracy = []
+
 
 # 测试数据的损失和准确率
 
