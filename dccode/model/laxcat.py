@@ -81,6 +81,9 @@ class temporal_attention_layer(nn.Module):
         self.bias2 = nn.Parameter(torch.zeros(l), requires_grad=True)
 
     # 前向传播
+    '''
+    输入
+    '''
     def forward(self, x):
         # x: B * j * l
         tmp = F.relu(torch.matmul(x, self.weight1).squeeze(-1) + self.bias1)
@@ -140,7 +143,7 @@ class LaxCat(nn.Module):
         # 在最后一个维度拼接输出结果
         # 从样本数*j*1*时间间隔数*组合数
         # 到样本数*组合数*j*时间间隔数
-        x = torch.cat(conv_outputs, -1).squeeze(2).permute(0,3,1,2)
+        x = torch.cat(conv_outputs, -1).squeeze(2).permute(0, 3, 1, 2)
         x = self.variable_attn(x)
         x = self.temporal_attn(x)
         return self.fc(x)
@@ -156,25 +159,27 @@ def main():
     combo_num:组合数
     :return:各个样本的预测结果
     """
-    # 随机生成输入张量
+    # 初始化参数
     sample_num = 3
     time_steps = 5
     features = 6
     combo_num = 3
+    # 随机生成输入张量
     x_random = torch.rand(sample_num, time_steps, features).cuda()
-
-    laxcat_m = LaxCat(time_num=time_steps, feature_num=features, label_num=4).cuda()
+    y_random = torch.randint(0, 2, (sample_num,)).cuda()
+    laxcat_m = LaxCat(time_num=time_steps, feature_num=features, label_num=2).cuda()
     # 统计模型参数总数量
     total_params = sum(p.numel() for p in laxcat_m .parameters())
+    print("生成的y_random为", y_random)
     print(f'{total_params:,} total parameters.')
-    # 输入张量x传递给laxcat模型
-    # x = torch.ones(3, 256, 6).cuda()
-    # output = laxcat_m(x)
-    # print("0的结果", output)
-
     # 随机产生的x的结果
     rand_output = laxcat_m(x_random)
+    loss_func = nn.CrossEntropyLoss()
+    loss = loss_func(rand_output, y_random)
+    pred = torch.argmax(rand_output, dim=-1)
+    print(pred)
     print("随机的结果为", rand_output)
+    print("随机的损失为", loss)
 
 
 if __name__ == '__main__':

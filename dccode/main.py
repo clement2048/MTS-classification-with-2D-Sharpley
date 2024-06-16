@@ -17,11 +17,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description='train and test')
     parser.add_argument('--config', default='default', type=str)  # Read UniTS hyperparameters（超参数，但是这个是UniTS模型的）
     # 数据库选择
-    parser.add_argument('--dataset', default='opportunity_lc', type=str,
+    parser.add_argument('--dataset', default='seizure', type=str,
                         choices=['opportunity_lc', 'seizure', 'wifi', 'keti'])
     # 模型选择，之后要删除
     parser.add_argument('--model', default='LaxCat', type=str,
-                        choices=['LaxCat', 'UniTS', 'THAT', 'RFNet', 'ResNet', 'MaDNN', 'MaCNN', 'static'])
+                        choices=['LaxCat'])
     # 产生随机数的种子
     parser.add_argument('--seed', default=0, type=int)
     # 日志
@@ -32,7 +32,7 @@ def parse_args():
                         choices=['', 'noise', 'missing_data'])
     # 精度，不知道有没有用上
     parser.add_argument('--ratio', default=0.2, type=float)
-    # gpu数量
+    # gpu设置
     parser.add_argument('--n_gpu', default=0, type=int)
     # 训练次数
     parser.add_argument('--epochs', default=50, type=int)
@@ -74,7 +74,6 @@ def parse_args():
     elif args.dataset == 'keti':
         args.time_num = 256
         args.feature_num = 4
-    # 设置日志存储位置
     args.model_save_path = os.path.join(args.log_path, args.model + '_' + args.config + '.pt')
     return args, config
 
@@ -116,6 +115,8 @@ def test(model, xtest, ytest):
     # 显示精确度以及Macro F1分数
     log("Accuracy : " + str(accuracy_score(y_true, y_pred)) +
         "\nMacro F1 : " + str(f1_score(y_true, y_pred, labels=list(range(args.num_labels)), average='macro')))
+    test_accuracy.append(100 * accuracy_score(y_true, y_pred))
+
 
 
 def main():
@@ -127,7 +128,7 @@ def main():
     print(args.model)
 
     model = LaxCat(time_num=args.time_num, feature_num=args.feature_num, label_num=args.num_labels,
-                   hidden_dim=64, kernel_size=(2, 32), stride=(8, 8)).cuda()
+                   hidden_dim=64, kernel_size=(1, 32), stride=(8, 8)).cuda()
     # 使用Adam优化器，传入模型参数和学习率
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
@@ -166,12 +167,11 @@ def main():
             for i in range(0, len(xtrain), args.batch_size):
                 # 将输入特征和标签转化为PyTorch张量，并且转移到GPU上
                 if i + args.batch_size <= len(xtrain):
-                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i: i + args.batch_size])),
-                                     dtype=torch.float32).cuda()
+                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i: i + args.batch_size]))).float().cuda()
                     # x = torch.Tensor(xtrain[i: i + args.batch_size]).cuda()
                     y = torch.LongTensor(ytrain[i: i + args.batch_size]).cuda()
                 else:
-                    x = torch.Tensor(xtrain[i:]).cuda()
+                    x = torch.tensor(torch.from_numpy(np.array(xtrain[i:]))).float().cuda()
                     y = torch.LongTensor(ytrain[i:]).cuda()
                 # 得到输出和loss
                 out = model(x)
@@ -194,7 +194,7 @@ def main():
             test(model, xtest, ytest)
             log("----------------------------")
 
-            plot_metrics(train_loss, train_accuracy)
+            plot_metrics(train_loss, train_accuracy, test_accuracy)
     # 如果收到键盘中断信号，则停止
     except KeyboardInterrupt:
         print('Exiting from training early')
@@ -204,28 +204,33 @@ def main():
         torch.save(model.state_dict(), args.model_save_path)
 
 
-# 训练数据的损失和准确率，用于作图
+# 训练和测试数据的损失和准确率，用于作图
 train_loss = []
 train_accuracy = []
+test_loss = []
+test_accuracy = []
 
+# 测试数据的损失和准确率
 
 # 绘图函数
-def plot_metrics(train_losses, train_accuracies):
+def plot_metrics(train_losses, train_accuracies, test_accuracies):
     clear_output(wait=True)
     plt.figure(figsize=(12, 5))
 
     plt.subplot(1, 2, 1)
     plt.plot(train_losses, label='Training Loss')
+    # plt.plot(test_losses, label='Test Accuracy')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
-    plt.title('Training Loss')
+    plt.title('Training and Test Loss')
     plt.legend()
 
     plt.subplot(1, 2, 2)
     plt.plot(train_accuracies, label='Training Accuracy')
+    plt.plot(test_accuracies, label='Test Accuracy')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.title('Training Accuracy')
+    plt.title('Training and Test Accuracy')
     plt.legend()
 
     plt.show()

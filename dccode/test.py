@@ -36,7 +36,7 @@
 # output = conv(input_tensor)
 #
 # print("卷积操作成功，cuDNN 正常工作")
-
+#
 # ## 检查npy文件
 # import os
 # import numpy as np
@@ -57,7 +57,7 @@
 # # 打印部分数据
 # print("Data (first 5 elements):", x_train[:5])
 #
-# ## 查看预测结果
+# # 查看预测结果
 #
 # y_train = np.load(os.path.join(path, 'y_train.npy'))
 # # 查看数据形状和类型
@@ -67,31 +67,31 @@
 # # 打印部分数据
 # print("Data (first 5 elements):", y_train[:5])
 
-
+#
 # # 加载 .npy 文件
 # file_path = 'path_to_your_file.npy'  # 将 'path_to_your_file.npy' 替换为你的 .npy 文件路径
 # data = np.load(file_path)
-
+#
 # # 查看数据形状和类型
 # print("Data shape:", data.shape)
 # print("Data type:", data.dtype)
 #
 # # 打印部分数据
 # print("Data (first 5 elements):", data[:5])
-#
-#
-import torch
 
-# 创建一个大小为 (6, 4) 的二维张量
-x = torch.randn(6, 4)
-print(x)
-print(len(x))
-# print(x.unsqueeze(-1))
-# print(x.unsqueeze(-1).shape)
-x_list = x.split(1,-1)
-print(x_list)
-print(x_list[0].shape)
-print(torch.cat(x_list,-1))
+
+# import torch
+
+# # 创建一个大小为 (6, 4) 的二维张量
+# x = torch.randn(6, 4)
+# print(x)
+# print(len(x))
+# # print(x.unsqueeze(-1))
+# # print(x.unsqueeze(-1).shape)
+# x_list = x.split(1,-1)
+# print(x_list)
+# print(x_list[0].shape)
+# print(torch.cat(x_list,-1))
 
 # # 在第二维上将张量分割成两份
 # x_split = list(torch.split(x, 2, dim=1))
@@ -110,3 +110,8 @@ print(torch.cat(x_list,-1))
 # # 生成所有可能的排列（选择2个变量的排列）
 # permutations = list(itertools.permutations(variables, 2))
 # print(permutations)
+
+#
+# import numpy as np
+#
+# print(np.random.permutation(9))

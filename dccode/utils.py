@@ -42,7 +42,7 @@ def read_data(args, config):
                 mask = np.random.random(x_test[i][:, j].shape) >= args.ratio
                 x_test[i][:, j] = x_test[i][:, j] * mask
     # 统计标签类别数量
-    args.num_labels = max(y_train) + 1
+    args.num_labels = len(set(y_train))
     summary = [0 for i in range(args.num_labels)]
     for i in y_train:
         summary[i] += 1
