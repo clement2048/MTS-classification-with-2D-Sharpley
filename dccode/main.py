@@ -11,13 +11,16 @@ import matplotlib.pyplot as plt
 from IPython.display import clear_output
 import numpy as np
 
+# 先将cudnn禁用(不禁用可能会报错)
+# torch.backends.cudnn.enabled = False
+
 
 # 进行参数配置
 def parse_args():
     parser = argparse.ArgumentParser(description='train and test')
     parser.add_argument('--config', default='default', type=str)  # Read UniTS hyperparameters（超参数，但是这个是UniTS模型的）
     # 数据库选择
-    parser.add_argument('--dataset', default='opportunity_lc', type=str,
+    parser.add_argument('--dataset', default='keti', type=str,
                         choices=['opportunity_lc', 'seizure', 'wifi', 'keti'])
     # 模型选择，之后要删除
     parser.add_argument('--model', default='LaxCat', type=str,
@@ -83,8 +86,7 @@ args, config = parse_args()
 log = set_up_logging(args, config)
 args.log = log
 
-# 卷积的特征数量
-pnum = 2
+
 
 """
 测试集验证函数，计算模型性能
@@ -119,10 +121,17 @@ def test(model, xtest, ytest):
     log("Accuracy : " + str(accuracy_score(y_true, y_pred)) +
         "\nMacro F1 : " + str(f1_score(y_true, y_pred, labels=list(range(args.num_labels)), average='macro')))
     test_accuracy.append(100 * accuracy_score(y_true, y_pred))
+    return 100 * accuracy_score(y_true, y_pred)
+
 
 
 
 def main():
+    # 卷积的特征数量
+    pnum = 1
+    # 总的训练准确率和测试准确率
+    tot_train_acc = 0
+    tot_test_acc = 0
     # 打印日志时间
     log("Start time:" + time.asctime(time.localtime(time.time())))
     # 使用read_data函数从args中获得训练样本和测试样本的相关值
@@ -190,13 +199,13 @@ def main():
                 _, predicted = torch.max(out.data, 1)
                 total += y.size(0)
                 correct += (predicted == y).sum().item()
-
+            tot_train_acc += 100 * correct / total
             train_loss.append(epoch_loss / (i / args.batch_size + 1))
             train_accuracy.append(100 * correct / total)
             # 打印每个epoch的训练损失
             log("Training loss : " + str(epoch_loss / (i / args.batch_size + 1)))
             # 在测试集上对模型进行测试，并且打印结果
-            test(model, xtest, ytest)
+            tot_test_acc += test(model, xtest, ytest)
             log("----------------------------")
 
             plot_metrics(train_loss, train_accuracy, test_accuracy)
@@ -207,6 +216,9 @@ def main():
     # 如果设置了保存路径则存储模型状态字典到指定路径
     if args.save:
         torch.save(model.state_dict(), args.model_save_path)
+
+    log("total_train_acc: " + str(tot_train_acc))
+    log("total_test_acc: " + str(tot_test_acc))
 
 
 # 训练和测试数据的损失和准确率，用于作图
@@ -243,4 +255,7 @@ def plot_metrics(train_losses, train_accuracies, test_accuracies):
 
 
 if __name__ == '__main__':
+    # 设置让cudnn选择更合适的卷积方法？尝试一下
+    torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.deterministic = False
     main()
